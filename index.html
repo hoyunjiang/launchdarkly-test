@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
+    <title>LaunchDarkly tutorial</title>
+    <!-- Use LaunchDarkly sdk -->
+    <script src="https://unpkg.com/launchdarkly-js-client-sdk@2"></script>
+  </head>
+  <body>
+
+    <input id="testButton" type="button" value="This is the magic button">
+    <p id="someText" hidden>Magic Button not available</p>
+
+    <script>
+      // Set up the user properties. This user should appear on your LaunchDarkly users dashboard
+      // soon after you run the demo.
+      var user = {
+        name: 'sdk-6b84c88b-b3e1-469d-9553-7f32cceb0922',
+        key: 'sdk-6b84c88b-b3e1-469d-9553-7f32cceb0922',
+      };
+
+      // Create a new LDClient instance with your environment-specific SDK key
+      var ldclient = LDClient.initialize('621dd002317b2314e4904c61', user);
+
+      function render() {
+        var flagValue = ldclient.variation('feature-flag-test', false);
+        if (flagValue) {
+          document.getElementById('testButton').hidden = false;
+          document.getElementById('someText').hidden = true;
+        }
+        else {
+          document.getElementById('testButton').hidden = true;
+          document.getElementById('someText').hidden = false;
+        }
+      }
+
+      ldclient.on('ready', render);
+      ldclient.on('change', render);
+
+    </script>
+  </body>
+</html>
